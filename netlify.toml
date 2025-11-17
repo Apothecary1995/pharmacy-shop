@@ -1,0 +1,9 @@
+[build]
+  
+  base = "frontend"
+ 
+  publish = "build" 
+
+[context.production.environment]
+  
+  REACT_APP_API_URL = "https://pharmacy-shop-whss.onrender.com"
