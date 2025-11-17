@@ -3,7 +3,8 @@
   base = "frontend"
  
   publish = "build" 
-
+[build.environment]
+  NODE_OPTIONS = "--openssl-legacy-provider"
 [context.production.environment]
   
   REACT_APP_API_URL = "https://pharmacy-shop-whss.onrender.com"
