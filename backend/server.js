@@ -1,0 +1,39 @@
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const path = require("path");
+require('dotenv').config();
+
+const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/images', express.static(path.join(__dirname, 'images'))); // SQL'de /images/ kullandık
+
+const db = require("./models");
+db.sequelize.sync()
+  .then(() => {
+    console.log("Database synced successfully.");
+  })
+  .catch((err) => {
+    console.log("Failed to sync db: " + err.message);
+  });
+
+// Routes
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to EDD Pharmacy API V2!" });
+});
+require("./routes/auth.routes")(app);
+require("./routes/drug.routes")(app);
+require("./routes/order.routes")(app);
+require("./routes/prescription.routes")(app);
+
+
+const PORT = process.env.PORT || 8081;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
