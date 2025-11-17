@@ -9,9 +9,9 @@ const app = express();
 
 
 const allowedOrigins = [
-    'http://localhost:3000', // Yerel geliştirme için (opsiyonel)
-    'https://pharmacy-shop-whss.onrender.com', // Kendi Render URL'niz (genellikle gerekmez, ama ekleyebilirsiniz)
-    'https://pharmacy-shopv.netlify.app' // <<<<< NETLIFY ADRESİNİZİ BURAYA EKLEYİN
+    'http://localhost:3000', 
+    'https://pharmacy-shop-whss.onrender.com', 
+    'https://pharmacy-shopv.netlify.app' 
 ];
 
 const corsOptions = {
@@ -26,6 +26,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 
 
 app.use(bodyParser.json());
