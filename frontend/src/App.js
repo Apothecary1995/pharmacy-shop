@@ -50,7 +50,7 @@ function App() {
       >
         
         <LiquidEther
-            colors={[ '#5227FF', '#FF9FFC', '#B19EEF' ]}
+            colors={[ '#FF00FF',  ]}
             mouseForce={20}
             cursorSize={100}
             isViscous={false}
