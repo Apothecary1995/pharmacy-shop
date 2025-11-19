@@ -20,7 +20,7 @@ const AuthModal = ({ onClose }) => {
         onClose();
       } else {
         const response = await register(username, email, password);
-        setMessage(response.data.message + " Please login.");
+        setMessage(response.data.message + " Please login");
         setIsLoginView(true);
       }
     } catch (error) {
@@ -54,14 +54,14 @@ const AuthModal = ({ onClose }) => {
           {message && <p style={{ color: isLoginView ? 'red' : 'green', textAlign: 'center' }}>{message}</p>}
           
           <button type="submit" className="btn" style={{ width: '100%' }} disabled={loading}>
-            {loading ? 'Processing...' : (isLoginView ? 'Login' : 'Register')}
+            {loading ? 'Processing' : (isLoginView ? 'Login 🌸進撃の巨人' : 'Register 🌸箭頭')}
           </button>
         </form>
         
         <p style={{ textAlign: 'center', marginTop: '15px' }}>
-          {isLoginView ? "Don't have an account? " : "Already have an account? "}
+          {isLoginView ? "Don't have an account it takes 2 minutes ✌顏文字 " : "Already have an account WHAT ARE U WAITING FOR 🏯 "}
           <a href="#" onClick={(e) => { e.preventDefault(); setIsLoginView(!isLoginView); setMessage(''); }}>
-            {isLoginView ? 'Register' : 'Login'}
+            {isLoginView ? 'Register Here MY FRIEND ִֶָ𓂃 ࣪˖ ִֶָ🐇་༘࿐' : 'Login ⎛⎝ ≽ > ⩊ < ≼ ⎠⎞'}
           </a>
         </p>
         

@@ -24,8 +24,7 @@ const CheckoutPage = () => {
     setLoading(true);
 
     if (requiresPrescription()) {
-      // Reçete gerekiyorsa, ödeme ve adres bilgilerini state'e kaydet
-      // ve reçete yükleme sayfasına yönlendir.
+     
       sessionStorage.setItem('checkoutData', JSON.stringify({
         shippingAddress,
         paymentMethod
@@ -34,7 +33,7 @@ const CheckoutPage = () => {
       return;
     }
 
-    // Reçete gerekmiyorsa, siparişi doğrudan oluştur
+    
     try {
       const orderData = {
         items: cartItems.map(item => ({ id: item.id, quantity: item.quantity })),

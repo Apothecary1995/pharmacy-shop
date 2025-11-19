@@ -8,7 +8,7 @@ const uploadPrescription = (formData) => {
   });
 };
 
-// --- Admin ---
+
 const getPendingPrescriptions = () => {
   return api.get("/api/prescriptions/pending");
 };

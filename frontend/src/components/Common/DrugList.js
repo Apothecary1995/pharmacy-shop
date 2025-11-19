@@ -23,7 +23,7 @@ const DrugList = ({ onDrugSelect }) => {
     fetchDrugs();
   }, []);
 
-  if (loading) return <p>Loading products...</p>;
+  if (loading) return <p>Loading products</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (

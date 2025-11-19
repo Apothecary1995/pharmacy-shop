@@ -34,13 +34,13 @@ const UploadPrescriptionPage = () => {
     setMessage('');
     
     try {
-      // 1. Reçeteyi yükle
+      
       const formData = new FormData();
       formData.append('prescription', file);
       const uploadRes = await prescriptionService.uploadPrescription(formData);
       const prescriptionId = uploadRes.data.prescription.id;
       
-      // 2. Siparişi oluştur (reçete ID'si ile)
+     
       const orderData = {
         items: cartItems.map(item => ({ id: item.id, quantity: item.quantity })),
         shippingAddress: checkoutData.shippingAddress,

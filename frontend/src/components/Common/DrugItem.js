@@ -6,6 +6,7 @@ const DrugItem = ({ drug, onDrugSelect }) => {
   const { cartItems, addToCart, updateQuantity } = useCart();
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8081";
 
+  //Change every url in code base to reach render id this url .env might be the failde production issue
   const existingCartItem = cartItems.find(item => item.id === drug.id);
   const currentQuantityInCart = existingCartItem ? existingCartItem.quantity : 0;
   

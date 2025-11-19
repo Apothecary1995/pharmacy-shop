@@ -8,7 +8,7 @@ const Drug = db.drugs;
 const User = db.users;
 const Prescription = db.prescriptions;
 
-// User: Create a new order
+
 exports.create = async (req, res) => {
   const { items, shippingAddress, paymentMethod, prescriptionId } = req.body;
   const userId = req.userId;
@@ -20,7 +20,7 @@ exports.create = async (req, res) => {
     return res.status(400).send({ message: "Shipping and payment info are required." });
   }
 
-  // Use a transaction
+  
   const t = await db.sequelize.transaction();
   try {
     let totalPrice = 0;
@@ -62,10 +62,10 @@ exports.create = async (req, res) => {
       userId: userId,
       prescriptionId: prescriptionId || null,
       totalPrice: totalPrice,
-      status: requiresRx ? 'pending_approval' : 'verified', // Auto-verify non-rx
-      shippingAddress: JSON.stringify(shippingAddress), // Store as JSON string
+      status: requiresRx ? 'pending_approval' : 'verified', 
+      shippingAddress: JSON.stringify(shippingAddress), 
       paymentMethod: paymentMethod,
-      paymentStatus: 'pending' // Simulate pending payment
+      paymentStatus: 'pending' 
     }, { transaction: t });
 
     for (const itemData of orderItemsData) {
@@ -124,7 +124,7 @@ exports.findByUser = async (req, res) => {
 
 
 exports.findAll = async (req, res) => {
-  const status = req.query.status; // e.g., /api/orders?status=pending_approval
+  const status = req.query.status; 
   let where = {};
   if (status) {
     where.status = status;
@@ -148,7 +148,7 @@ exports.findAll = async (req, res) => {
 
 
 exports.updateStatus = async (req, res) => {
-  const { orderId, status } = req.body; // status: 'verified', 'shipped', 'cancelled', 'completed'
+  const { orderId, status } = req.body; 
 
   try {
     const order = await Order.findByPk(orderId, { include: [User] });

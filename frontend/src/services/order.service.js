@@ -1,7 +1,7 @@
 import api from "./api";
 
 const createOrder = (orderData) => {
-  // orderData = { items, shippingAddress, paymentMethod, prescriptionId }
+  
   return api.post("/api/orders", orderData);
 };
 

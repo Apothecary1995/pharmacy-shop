@@ -24,8 +24,8 @@ const PendingPrescriptions = ({ onUpdate }) => {
   const handleStatusUpdate = async (id, status) => {
     try {
       await prescriptionService.updatePrescriptionStatus(id, status);
-      fetchPending(); // Listeyi yenile
-      onUpdate(); // AdminDashboardPage'i uyar
+      fetchPending(); 
+      onUpdate(); 
     } catch (err) {
       alert("Failed to update status.");
     }

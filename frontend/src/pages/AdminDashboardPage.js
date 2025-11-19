@@ -3,7 +3,7 @@ import PendingPrescriptions from '../components/Admin/PendingPrescriptions';
 import PendingOrders from '../components/Admin/PendingOrders';
 
 const AdminDashboardPage = () => {
-  // Bu key, bileşenlerden biri güncellendiğinde diğerini tetiklemek için
+  
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleUpdate = () => {

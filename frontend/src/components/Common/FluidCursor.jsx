@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-
+// did debugging on the cursor to lightweight website 
 function SplashCursor() {
   const canvasRef = useRef(null);
 
@@ -7,7 +7,7 @@ function SplashCursor() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Canvas boyutunu ayarla
+    
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -40,11 +40,11 @@ function SplashCursor() {
     };
 
     const animate = () => {
-      // Canvas'ı temizle (yarı saydam)
+    
       //ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Ana cursor
+    
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(mouseX, mouseY, 8, 0, Math.PI * 2);

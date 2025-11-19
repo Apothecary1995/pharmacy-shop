@@ -35,7 +35,7 @@ const PendingOrders = ({ refreshKey }) => {
     <div className="admin-section">
       <h3>Pending Orders (Awaiting Approval)</h3>
       <div className="order-list">
-        {orders.length === 0 ? <p>No pending orders.</p> : (
+        {orders.length === 0 ? <p>No pending orders</p> : (
           orders.map(o => (
             <div key={o.id} className="order-item">
               <p><strong>Order ID:</strong> {o.id} | <strong>User:</strong> {o.user.email}</p>

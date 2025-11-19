@@ -13,15 +13,15 @@ const transporter = nodemailer.createTransport({
 
 const sendOrderStatusEmail = async (toEmail, orderId, status) => {
   const subjectMap = {
-    verified: "Your Order is Verified",
-    shipped: "Your Order Has been Shipped",
-    cancelled: "Your Order Has Been Cancelled"
+    verified: "Your Order is Verified BY me a 🐉",
+    shipped: "Your Order Has been Shipped  愛",
+    cancelled: "Your Order Has Been Cancelled 警察"
   };
 
   const textMap = {
-    verified: `Your order #${orderId} has been verified and is being processed.`,
-    shipped: `Your order #${orderId} has been shipped. We'll send tracking info soon!`,
-    cancelled: `We inform you that order #${orderId} has been cancelled.`
+    verified: `Your order #${orderId} has been verified by admin and is being processed.`,
+    shipped: `Your order #${orderId} has been shipped stay on track `,
+    cancelled: `Your order #${orderId} has been cancelled.`
   };
 
   if (!subjectMap[status]) {
@@ -31,7 +31,7 @@ const sendOrderStatusEmail = async (toEmail, orderId, status) => {
 
   try {
     await transporter.sendMail({
-      from: `"EDD Pharmacy" <${process.env.EMAIL_USER}>`,
+      from: `"EDD Pharmacy 我喜欢它❤️" <${process.env.EMAIL_USER}>`,
       to: toEmail,
       subject: subjectMap[status],
       text: textMap[status],
