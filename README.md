@@ -1,1 +1,1 @@
-# pharmacy-shop
+# pharmacy-shop project
