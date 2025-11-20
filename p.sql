@@ -92,7 +92,7 @@ VALUES
     NOW(), 
     NOW()
 ),
-(
+(        //sender şifrem
     'Amoxicillin 500mg', 
     'Antibiotic for bacterial infections.', 
     45.75, 

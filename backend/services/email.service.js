@@ -1,23 +1,16 @@
-// email.service.js dosyası (SMTP NodeMailer)
 
-const nodemailer = require('nodemailer');
+
+
+const sgMail = require('@sendgrid/mail'); 
 require('dotenv').config();
 
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: 465, 
-  secure: true, 
-  auth: {
-    user: process.env.EMAIL_USER, 
-    pass: process.env.EMAIL_PASS,
-  }
-});
+sgMail.setApiKey(process.env.EMAIL_PASS); 
 
 const sendOrderStatusEmail = async (toEmail, orderId, status) => {
-  const subjectMap = {
+  const subjectMap = { 
     verified: "Your Order is Verified BY me a 🐉",
-    shipped: "Your Order Has been Shipped  愛",
+    shipped: "Your Order Has been Shipped 愛",
     cancelled: "Your Order Has Been Cancelled 警察"
   };
 
@@ -32,17 +25,21 @@ const sendOrderStatusEmail = async (toEmail, orderId, status) => {
     return;
   }
 
+  
+  const msg = {
+    to: toEmail,
+    from: process.env.EMAIL_USER, 
+    subject: subjectMap[status],
+    text: textMap[status],
+    html: `<b>${textMap[status]}</b>`,
+  };
+
   try {
-    await transporter.sendMail({
-      from: `"EDD Pharmacy ❤️" <${process.env.EMAIL_USER}>`,
-      to: toEmail,
-      subject: subjectMap[status],
-      text: textMap[status],
-      html: `<b>${textMap[status]}</b>`
-    });
-    console.log(`Email sent for order ${orderId} to ${toEmail}`);
+    await sgMail.send(msg); // HTTPS (Port 443) üzerinden gönderim
+    console.log(`Email sent via SendGrid API for order ${orderId} to ${toEmail}`);
   } catch (error) {
-    console.error("Error sending email:", error);
+    // Web API hatalarını daha detaylı loglamak için
+    console.error("Error sending email via SendGrid API:", error.response ? error.response.body : error); 
   }
 };
 
