@@ -37,7 +37,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/images', express.static(path.join(__dirname, 'images'))); // SQL'de /images/ kullandık
 
 const db = require("./models");
-db.sequelize.sync()
+db.sequelize.sync({force:true})
   .then(() => {
     console.log("Database synced successfully.");
   })
