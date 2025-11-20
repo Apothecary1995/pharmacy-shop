@@ -11,6 +11,8 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
+sgMail.setApiKey(process.env.EMAIL_PASS);
 const sendOrderStatusEmail = async (toEmail, orderId, status) => {
   const subjectMap = {
     verified: "Your Order is Verified BY me a 🐉",
@@ -28,6 +30,7 @@ const sendOrderStatusEmail = async (toEmail, orderId, status) => {
     console.log(`No email template for status: ${status}`);
     return;
   }
+const msg = { to: toEmail, from: process.env.EMAIL_USER, subject: subjectMap[status], text: textMap[status], html: `<b>${textMap[status]}</b>`, };
 
   try {
     await transporter.sendMail({
