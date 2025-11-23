@@ -13,7 +13,7 @@ import StripePaymentForm from '../components/Checkout/StripePaymentForm';
 const STRIPE_PUBLISHABLE_KEY = "pk_test_51SW3JEL1E21BtQcYxNA2c6Q1h3BZwZa1U0T7qML5nh2CCbfGuGRh7vJKvWBmLqsUnHMqzHIq8WZn3ox05g2cDUJT00dLLtExX5"; 
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
-
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8081';
 const CheckoutPage = () => {
     const [step, setStep] = useState(1);
     const [shippingAddress, setShippingAddress] = useState(null);
@@ -97,7 +97,7 @@ const CheckoutPage = () => {
 
     
     const handleStripeSuccess = async (paymentIntentId) => {
-        setMessage('Payment successful, finalizing order...');
+        setMessage('Payment successful, finalizing order');
         setLoading(true);
 
         
