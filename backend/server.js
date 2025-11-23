@@ -1,9 +1,11 @@
+const paymentRoutes = require('./routes/payment.routes');
 //require('dotenv').config(); might need this later
+
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
-const paymentRoutes = require('./routes/payment.routes');
+
 
 
 const app = express();
