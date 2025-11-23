@@ -6,12 +6,12 @@ import AddressForm from '../components/Checkout/AddressForm';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js'; 
 import StripePaymentForm from '../components/Checkout/StripePaymentForm'; 
-import api from '../services/api'; 
+//import api from '../services/api'; 
 
 
 // publish key 
-//const STRIPE_PUBLISHABLE_KEY = "pk_test_51SW3JEL1E21BtQcYxNA2c6Q1h3BZwZa1U0T7qML5nh2CCbfGuGRh7vJKvWBmLqsUnHMqzHIq8WZn3ox05g2cDUJT00dLLtExX5"; 
-//const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+const STRIPE_PUBLISHABLE_KEY = "pk_test_51SW3JEL1E21BtQcYxNA2c6Q1h3BZwZa1U0T7qML5nh2CCbfGuGRh7vJKvWBmLqsUnHMqzHIq8WZn3ox05g2cDUJT00dLLtExX5"; 
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 
 const CheckoutPage = () => {
@@ -30,42 +30,65 @@ const CheckoutPage = () => {
   
     useEffect(() => {
         
-        if (step === 2 && cartTotal > 0 && !clientSecret) {
+        
+        if (cartTotal <= 0) return;
+        
+
+        if (step === 2 && !clientSecret) {
             const fetchClientSecret = async () => {
                 setLoading(true);
+                setMessage(''); // 
                 try {
+                   
+                    const fullUrl = `${BACKEND_URL}/api/payment/create-intent`;
                     
-                    const response = await fetch('/api/payment/create-intent', {
+                    const response = await fetch(fullUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            // BURAYA KESİNLİKLE TOKEN EKLENMİYOR
+                           
                         },
                         body: JSON.stringify({
+                            
                             amount: cartTotal, 
-                            currency: 'usd', })
+                            currency: 'usd', 
+                        })
                     });
+                    
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                       
+                        throw new Error(errorData.error || `Server responded with status ${response.status}`);
+                    }
+                    
                     const data = await response.json();
+
                     if (data.clientSecret) {
                         setClientSecret(data.clientSecret);
+                        setMessage("Payment details loading..."); 
                     } else {
-                        setMessage("client secret couldnt retrived");
+                        
+                        setMessage("Client secret could not be retrieved due to unexpected server response.");
                     }
                 } catch (err) {
                     console.error("Payment initialization error:", err);
-                    setMessage("payment initilazed error " + (err.response?.data?.error || "server connection issue "));
+                   
+                    setMessage(`payment initilazed error: ${err.message || "Server connection failed."}`);
                 } finally {
                     setLoading(false);
                 }
             };
             fetchClientSecret();
         }
-        // make sure to refresh client in case of return 
+        
+        
         if (step === 1 && clientSecret) {
-             setClientSecret('');
+            setClientSecret('');
+            setMessage('');
         }
 
-    }, [step, cartTotal, clientSecret]);
+    }, [step, cartTotal, clientSecret]); 
 
     const handleAddressSubmit = (addressData) => {
         setShippingAddress(addressData);
@@ -74,10 +97,10 @@ const CheckoutPage = () => {
 
     
     const handleStripeSuccess = async (paymentIntentId) => {
-        setMessage('');
+        setMessage('Payment successful, finalizing order...');
         setLoading(true);
 
-        // Reçete Gereksinimi Kontrolü
+        
         if (requiresPrescription()) {
             
             sessionStorage.setItem('checkoutData', JSON.stringify({
@@ -104,62 +127,59 @@ const CheckoutPage = () => {
             setTimeout(() => navigate('/my-orders'), 3000);
             
         } catch (error) {
-            setMessage("Failed to place order: " + error.response?.data?.message);
+            setMessage("Failed to place order: " + (error.response?.data?.message || error.message));
         } finally {
             setLoading(false);
         }
     };
     
-    
+    // Client 
+    const elementOptions = clientSecret ? { clientSecret, appearance: { theme: 'stripe' } } : {};
 
     if (cartItems.length === 0 && !message) {
         return (
             <div className="center-content" style={{maxWidth: '600px', margin: '20px auto'}}>
-                <p>Your cart is empty <a href="/">Go do some shopping</a>.</p>
+                <p>Your cart is empty <a href="/">do some shopping</a>.</p>
             </div>
         );
     }
     
- 
-    const elementOptions = clientSecret ? { clientSecret, appearance: { theme: 'stripe' } } : {};
-
     return (
         <div className="center-content" style={{maxWidth: '600px', margin: '20px auto'}}>
             <h2>Checkout</h2>
             <h4>Total: ${typeof cartTotal === 'number' ? cartTotal.toFixed(2) : '0.00'}</h4> 
             <hr style={{margin: '20px 0'}} />
             
-            {message && <p style={{color: 'green', fontWeight: 'bold'}}>{message}</p>}
-            {loading && <p>Placing your order,please wait.</p>}
+            {message && <p style={{color: message.includes('error') ? 'red' : 'green', fontWeight: 'bold'}}>{message}</p>}
+            {loading && <p>Please wait</p>}
 
-            {!message && !loading && (
+            {!loading && (
                 <>
+                    {/* Adım 1: Adres */}
                     {step === 1 && <AddressForm onNext={handleAddressSubmit} />}
                     
-                    {/*  stripe form dont forget to change later */}
+                    {/* Adım 2: Ödeme */}
                     {step === 2 && (
                         <>
-                            <p>Shipping to: {shippingAddress?.street}, {shippingAddress?.city}</p>
+                            <p>Shipping to: **{shippingAddress?.street}, {shippingAddress?.city}**</p>
                             <div style={{marginBottom: '20px', border: '1px solid #eee', padding: '15px', borderRadius: '8px'}}>
                                 
-                                {/* render to be */}
-                                {clientSecret ? (
-                                   
+                                {clientSecret && stripePromise ? (
+                                    
                                     <Elements stripe={stripePromise} options={elementOptions}> 
                                         <StripePaymentForm 
                                             onPaymentSuccess={handleStripeSuccess} 
-                                          
                                         />
                                     </Elements>
                                 ) : (
                                     
-                                    <p>payment method loading</p>
+                                    <p>{loading ? "Payment method loading..." : "Waiting for payment details. Please go back to address step if the issue persists."}</p>
                                 )}
 
                             </div>
                             
                             <button onClick={() => setStep(1)} className="btn-secondary" style={{display: 'block', width: '100%'}}>
-                                ← Adres Bilgilerine Dön
+                                ← go back to adress
                             </button>
                         </>
                     )}

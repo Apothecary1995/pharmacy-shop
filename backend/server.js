@@ -1,5 +1,5 @@
 const paymentRoutes = require('./routes/payment.routes');
-//require('dotenv').config(); might need this later
+require('dotenv').config(); 
 
 const express = require("express");
 const cors = require("cors");
@@ -10,7 +10,7 @@ const path = require("path");
 
 const app = express();
 
-const allowedOrigins = [
+/*const allowedOrigins = [
     'http://localhost:3000', 
     'https://pharmacy-shop-whss.onrender.com', 
     'https://pharmacy-shopv.netlify.app' 
@@ -27,8 +27,8 @@ const corsOptions = {
     credentials: true
 };
 
-app.use(cors(corsOptions));
-
+app.use(cors(corsOptions));*/
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
