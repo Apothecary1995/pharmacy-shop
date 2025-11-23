@@ -20,7 +20,8 @@ console.log("Bulunan Uzunluk (Temizlenmiş):", cleanKey.length);
 
 
 const createPaymentIntent = async (req, res) => {
-    
+     console.log("PAYMENT CONTROLLER'A ULAŞILDI!");
+    console.log("İstek Başlıkları (Headers):", req.headers);
     const { amount, currency = 'usd' } = req.body; 
 
     // İsteğin alındığını kontrol et

@@ -10,8 +10,8 @@ import api from '../services/api';
 
 
 // publish key 
-const STRIPE_PUBLISHABLE_KEY = "pk_test_51SW3JEL1E21BtQcYxNA2c6Q1h3BZwZa1U0T7qML5nh2CCbfGuGRh7vJKvWBmLqsUnHMqzHIq8WZn3ox05g2cDUJT00dLLtExX5"; 
-const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+//const STRIPE_PUBLISHABLE_KEY = "pk_test_51SW3JEL1E21BtQcYxNA2c6Q1h3BZwZa1U0T7qML5nh2CCbfGuGRh7vJKvWBmLqsUnHMqzHIq8WZn3ox05g2cDUJT00dLLtExX5"; 
+//const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 
 const CheckoutPage = () => {
@@ -35,17 +35,24 @@ const CheckoutPage = () => {
                 setLoading(true);
                 try {
                     
-                    const response = await api.post('/api/payment/create-intent', {
-                        amount: cartTotal, 
-                        currency: 'usd', 
+                    const response = await fetch('/api/payment/create-intent', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // BURAYA KESİNLİKLE TOKEN EKLENMİYOR
+                        },
+                        body: JSON.stringify({
+                            amount: cartTotal, 
+                            currency: 'usd', })
                     });
-                    
-                    if (response.data.clientSecret) {
-                        setClientSecret(response.data.clientSecret);
+                    const data = await response.json();
+                    if (data.clientSecret) {
+                        setClientSecret(data.clientSecret);
                     } else {
                         setMessage("client secret couldnt retrived");
                     }
                 } catch (err) {
+                    console.error("Payment initialization error:", err);
                     setMessage("payment initilazed error " + (err.response?.data?.error || "server connection issue "));
                 } finally {
                     setLoading(false);
