@@ -9,7 +9,7 @@ const LeftSidebar = ({ drug }) => {
         <div>
           <h3>{drug.name}</h3>
           <img 
-            src={`${API_URL}${drug.imageUrl}` || `${API_URL}/images/placeholder.jpg`} 
+            src={drug.imageUrl || '/images/placeholder.jpg'} 
             alt={drug.name} 
             style={{ width: '100%', borderRadius: '8px' }}
           />

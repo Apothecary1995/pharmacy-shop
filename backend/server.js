@@ -1,12 +1,12 @@
+//require('dotenv').config(); might need this later
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
-require('dotenv').config();
+const paymentRoutes = require('./routes/payment.routes');
+
 
 const app = express();
-
-
 
 const allowedOrigins = [
     'http://localhost:3000', 
@@ -27,8 +27,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -39,23 +37,24 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 const db = require("./models");
 db.sequelize.sync()
   .then(() => {
-    console.log("Database synced successfully.");
+    console.log("Database synced");
   })
   .catch((err) => {
-    console.log("Failed to sync db: " + err.message);
+    console.log("Failed to sync database " + err.message);
   });
 
 // Routes
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to EDD Pharmacy API V2!" });
+    res.json({ message: "Welcome to EDD Pharmacy API V2!" });
 });
 require("./routes/auth.routes")(app);
 require("./routes/drug.routes")(app);
 require("./routes/order.routes")(app);
 require("./routes/prescription.routes")(app);
+app.use('/api/payment', paymentRoutes);
 
 
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+    console.log(`Server is running on port ${PORT}.`);
 });

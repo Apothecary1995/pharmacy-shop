@@ -50,7 +50,7 @@ function App() {
       >
         
         <LiquidEther
-            colors={[ '#FF00FF',  ]}
+            colors={[ '#00E5FF',  ]}
             mouseForce={20}
             cursorSize={100}
             isViscous={false}
@@ -58,10 +58,10 @@ function App() {
             iterationsViscous={32}
             iterationsPoisson={32}
             resolution={0.5}
-            isBounce={false}
+            isBounce={true}
             autoDemo={true}
             autoSpeed={0.5}
-            autoIntensity={2.2}
+            autoIntensity={8.2}
             takeoverDuration={0.25}
             autoResumeDelay={3000}
             autoRampDuration={0.6}

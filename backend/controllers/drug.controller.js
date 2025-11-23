@@ -1,9 +1,30 @@
 const db = require("../models");
 const Drug = db.drugs;
-const { Op } = require("sequelize");
+const { Op } = require("sequelize"); 
 
 exports.findAll = (req, res) => {
-  Drug.findAll()
+  
+  const { category } = req.query; 
+
+  const condition = {}; 
+
+  
+
+  // catagory
+  if (category && category !== 'All') { 
+    
+    const categoryCondition = {
+      category: { [Op.eq]: category }
+    };
+    
+   
+    condition.where = categoryCondition;
+    
+  } 
+  
+
+  // Sequelize stareted here
+  Drug.findAll({ where: condition.where })
     .then(data => {
       res.send(data);
     })

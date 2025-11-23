@@ -1,7 +1,26 @@
+// frontend/src/services/drug.service.js (GÜNCELLENDİ)
+
 import api from "./api";
 
-const getAllDrugs = () => {
-  return api.get("/api/drugs");
+// getAllDrugs fonksiyonu artık filtreleri kabul ediyor
+const getAllDrugs = (filters = {}) => { 
+  let url = "/api/drugs";
+  const params = [];
+
+  if (filters.searchQuery && filters.searchQuery.trim() !== '') {
+    params.push(`search=${encodeURIComponent(filters.searchQuery.trim())}`);
+  }
+  
+  // Kategori 'All' değilse filtreye ekle
+  if (filters.category && filters.category !== 'All') {
+    params.push(`category=${encodeURIComponent(filters.category)}`);
+  }
+  
+  if (params.length > 0) {
+    url += `?${params.join('&')}`;
+  }
+  
+  return api.get(url);
 };
 
 const getDrugById = (id) => {

@@ -44,10 +44,10 @@ const DrugItem = ({ drug, onDrugSelect }) => {
 
   return (
     <div className="drug-item" onClick={() => onDrugSelect(drug)}>
-      <img src={`${API_URL}${drug.imageUrl}` || `${API_URL}/images/placeholder.jpg`} alt={drug.name} />
+      <img src={drug.imageUrl || '/images/placeholder.jpg'} alt={drug.name} />
       <div className="drug-name">
         {drug.name}
-        {drug.requiresPrescription && <span className="prescription-badge">RX</span>}
+        {drug.requiresPrescription && <span className="prescription-badge">PR🔒</span>}
       </div>
       <div className="drug-description">{drug.description}</div>
       <div className="price">${parseFloat(drug.price).toFixed(2)}</div>

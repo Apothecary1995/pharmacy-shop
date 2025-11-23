@@ -45,12 +45,12 @@ function SplashCursor() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = '#e50404ff';
       ctx.beginPath();
       ctx.arc(mouseX, mouseY, 8, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = '#f80c0cff';
       ctx.beginPath();
       ctx.arc(mouseX, mouseY, 4, 0, Math.PI * 2);
       ctx.fill();

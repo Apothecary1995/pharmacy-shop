@@ -76,7 +76,7 @@ const UploadPrescriptionPage = () => {
         {message && <p style={{ color: loading ? 'blue' : 'red' }}>{message}</p>}
         
         <button type="submit" className="btn btn-success" disabled={loading} style={{width: '100%'}}>
-          {loading ? 'Processing...' : 'Upload & Place Order'}
+          {loading ? 'Processing' : 'Upload & Place Order'}
         </button>
       </form>
     </div>
