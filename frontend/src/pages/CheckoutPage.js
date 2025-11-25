@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // 🛑 useEffect ve api için import eklendi
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import orderService from '../services/order.service';
@@ -105,6 +105,7 @@ const CheckoutPage = () => {
             
             sessionStorage.setItem('checkoutData', JSON.stringify({
                 shippingAddress,
+                paymentMethod: 'Stripe',
                 paymentIntentId
             }));
             navigate('/upload-prescription');
