@@ -7,7 +7,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8081';
 const authHeader = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.accessToken) {
-        // Backend'inizde "x-access-token" başlığı bekleniyor.
+       
         return { 'x-access-token': user.accessToken };
     } else {
         return {};
