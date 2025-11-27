@@ -10,10 +10,12 @@ const path = require("path");
 
 const app = express();
 
-/*const allowedOrigins = [
+const allowedOrigins = [
     'http://localhost:3000', 
     'https://pharmacy-shop-whss.onrender.com', 
-    'https://pharmacy-shopv.netlify.app' 
+    'https://pharmacy-shopv.netlify.app',
+    'https://pharmacy-shopv2.netlify.app'
+    
 ];
 
 const corsOptions = {
@@ -27,8 +29,8 @@ const corsOptions = {
     credentials: true
 };
 
-app.use(cors(corsOptions));*/
-app.use(cors());
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
