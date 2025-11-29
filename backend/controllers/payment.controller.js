@@ -1,71 +1,45 @@
 require('dotenv').config(); 
 
-const stripe = require('stripe');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); 
 
 
-const rawKey = process.env.STRIPE_SECRET_KEY || '';
-const cleanKey = rawKey.replace(/[\s"]/g, '');
-
-
-if (!cleanKey || cleanKey.length < 50) {
-    console.error("FATAL HATA: Stripe Secret Key bulunamadi veya cok kisa! (.env dosyasini kontrol edin)");
-}
-
-
-const stripeInstance = stripe(cleanKey); 
-
-// cleaned secret key from sendgrid api clash
-console.log("Stripe Secret Key'in son 4 hanesi:", cleanKey.slice(-4));
-console.log("Bulunan Uzunluk (Temizlenmiş):", cleanKey.length); 
-
-
-const createPaymentIntent = async (req, res) => {
-     console.log("PAYMENT CONTROLLER'A ULAŞILDI!");
-    console.log("İstek Başlıkları (Headers):", req.headers);
-    const { amount, currency = 'usd' } = req.body; 
-
-    // İsteğin alındığını kontrol et
-    console.log(`[Stripe] Payment Intent requested Tutar: ${amount} ${currency}`); 
+exports.createPaymentIntent = async (req, res) => {
+    
+    const { amount } = req.body; 
+    const userId = req.userId;
 
     if (!amount || amount <= 0) {
-        // Log 1.1: amount 0 veya yok
-        console.error(`[Stripe] errorinvalide amount , amount: ${amount}`);
-        return res.status(400).json({ error: "Minimum amount required." });
+        return res.status(400).send({ message: "Invalid amount." });
     }
-    
-    // payment methods use 1to*100 ratio for every prducts price
+
+   
     const amountInCents = Math.round(amount * 100); 
 
     try {
-        
-        const paymentIntent = await stripeInstance.paymentIntents.create({
+       
+        const paymentIntent = await stripe.paymentIntents.create({
             amount: amountInCents,
-            currency: currency, 
-            
-            automatic_payment_methods: {
-                enabled: true, 
-            },
+            currency: 'usd', 
+            automatic_payment_methods: { enabled: true },
+            metadata: { userId: userId }, 
         });
 
-        
-        console.log(`[Stripe] Payment Intent created Client Secret started: ${paymentIntent.client_secret.slice(0, 10)}...`); 
-
-
-        
-        res.status(200).json({
+   
+        res.status(200).send({
             clientSecret: paymentIntent.client_secret,
         });
+
     } catch (error) {
-        
-        console.error("Stripe Payment Intent generate error:");
-        console.error("   erroe:", error.message);
-        console.error("   typoe:", error.type);
-       res.status(500).json({ 
-            error: error.message || "An unknown error occurred while processing the payment intent." 
+        console.error("Stripe Hata:", error.message);
+        res.status(500).send({ 
+            message: "Failed to create Payment Intent due to Stripe error.", 
+            error: error.message 
         });
     }
 };
 
-module.exports = {
-    createPaymentIntent,
+
+exports.handleWebhook = (req, res) => {
+    
+    res.status(200).send({ received: true });
 };
